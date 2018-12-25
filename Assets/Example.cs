@@ -30,34 +30,51 @@ public class Example : MonoBehaviour
 		processor.onSpectrum.AddListener (onSpectrum);
 	}
 
-	//this event will be called every time a beat is detected.
-	//Change the threshold parameter in the inspector
-	//to adjust the sensitivity
+    //this event will be called every time a beat is detected.
+    //Change the threshold parameter in the inspector
+    //to adjust the sensitivity
+    public Animator beatMeter;
 	void onOnbeatDetected ()
 	{
         //Debug.Log ("Beat!!!");
-        processor.changeCameraColor();
+        //processor.changeCameraColor();
+
+        beatMeter.SetTrigger("Beat");
     }
 
     public Transform[] spectr;
 	//This event will be called every frame while music is playing
 	public void onSpectrum (float[] spectrum)
 	{
-        Debug.Log("SPECTRUM!! "+ spectrum.Length);
+        //Debug.Log("SPECTRUM!! "+ spectrum.Length);
         //The spectrum is logarithmically averaged
         //to 12 bands
-
-        for (int i = 0; i < spectrum.Length; ++i) {
+        for (int i = 0; i < spectrum.Length; i++)
+        {
             Vector3 start = new Vector3(i, 0, 0);
-            Vector3 end = new Vector3(i, spectrum[i] * 10f, 0);
-            Debug.DrawLine (start, end);
+            Vector3 end = new Vector3(i, spectrum[i] * 20f, 0);
+            Debug.DrawLine(start, end);
+        }
+      
 
-            //if(i<=4)
-            //{
-            //    spectr[i].GetChild(0).position = end;
-            //    Debug.Log(spectrum[3]);
-            //}
-            
-		}
+        for (int i = processor.NBandStart; i < spectrum.Length; ++i) {
+           
+
+            if (i < processor.NBand )
+            {
+                spectr[i].GetChild(0).position = new Vector3(i, spectrum[i] * 20f, 0); 
+
+            }
+            else
+                spectr[i].GetChild(0).position = new Vector3(i, 0, 0);
+
+        }
+        if(processor.NBandStart != 0)
+        {
+            for (int i = 0; i < processor.NBandStart; i++)
+            {
+                spectr[i].GetChild(0).position = new Vector3(i, 0, 0);
+            }
+        }
 	}
 }

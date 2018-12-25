@@ -33,9 +33,24 @@ public class AudioProcessor : MonoBehaviour
 	/* log-frequency averaging controls */
     [SerializeField]
 	private int nBand = 12;
-	// number of bands
+    // number of bands
 
-	public float gThresh = 0.1f;
+    public int NBandStart = 0;
+    public int NBand
+    {
+        get
+        {
+            return nBand;
+        }
+
+        set
+        {
+            nBand = value;
+        }
+    }
+
+
+    public float gThresh = 0.1f;
 	// sensitivity
 
 	int blipDelayLen = 16;
@@ -74,8 +89,9 @@ public class AudioProcessor : MonoBehaviour
 	public OnBeatEventHandler onBeat;
 	public OnSpectrumEventHandler onSpectrum;
 
-	//////////////////////////////////
-	private long getCurrentTimeMillis ()
+
+    //////////////////////////////////
+    private long getCurrentTimeMillis ()
 	{
 		long milliseconds = System.DateTime.Now.Ticks / System.TimeSpan.TicksPerMillisecond;
 		return milliseconds;
@@ -104,8 +120,8 @@ public class AudioProcessor : MonoBehaviour
 		framePeriod = (float)bufferSize / (float)samplingRate;
 
 		//initialize record of previous spectrum
-		spec = new float[nBand];
-		for (int i = 0; i < nBand; ++i)
+		spec = new float[NBand];
+		for (int i = NBandStart; i < NBand; ++i)
 			spec [i] = 100.0f;
 
 		auco = new Autoco (maxlag, decay, framePeriod, getBandWidth ());
@@ -148,7 +164,7 @@ public class AudioProcessor : MonoBehaviour
 
 			/* calculate the value of the onset function in this frame */
 			float onset = 0;
-			for (int i = 0; i < nBand; i++) {
+			for (int i = NBandStart; i < NBand; i++) {
 				float specVal = (float)System.Math.Max (-100.0f, 20.0f * (float)System.Math.Log10 (averages [i]) + 160); // dB value of this band
 				specVal *= 0.025f;
 				float dbInc = specVal - spec [i]; // dB increment since last frame
@@ -273,10 +289,10 @@ public class AudioProcessor : MonoBehaviour
 
 	public void computeAverages (float[] data)
 	{
-		for (int i = 0; i < 12; i++) {
+		for (int i = NBandStart; i < NBand; i++) {
 			float avg = 0;
 			int lowFreq;
-			if (i == 0)
+			if (i == NBandStart)
 				lowFreq = 0;
 			else
 				lowFreq = (int)((samplingRate / 2) / (float)System.Math.Pow (2, 12 - i));
