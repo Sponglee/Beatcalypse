@@ -19,12 +19,13 @@ using System;
 
 public class Example : MonoBehaviour
 {
-    
-	void Start ()
+    private AudioProcessor processor;
+
+    void Start ()
 	{
 		//Select the instance of AudioProcessor and pass a reference
 		//to this object
-		AudioProcessor processor = FindObjectOfType<AudioProcessor> ();
+		processor = FindObjectOfType<AudioProcessor> ();
 		processor.onBeat.AddListener (onOnbeatDetected);
 		processor.onSpectrum.AddListener (onSpectrum);
 	}
@@ -34,19 +35,29 @@ public class Example : MonoBehaviour
 	//to adjust the sensitivity
 	void onOnbeatDetected ()
 	{
-		Debug.Log ("Beat!!!");
-	}
+        //Debug.Log ("Beat!!!");
+        processor.changeCameraColor();
+    }
 
+    public Transform[] spectr;
 	//This event will be called every frame while music is playing
-	void onSpectrum (float[] spectrum)
+	public void onSpectrum (float[] spectrum)
 	{
-		//The spectrum is logarithmically averaged
-		//to 12 bands
+        Debug.Log("SPECTRUM!! "+ spectrum.Length);
+        //The spectrum is logarithmically averaged
+        //to 12 bands
 
-		for (int i = 0; i < spectrum.Length; ++i) {
-			Vector3 start = new Vector3 (i, 0, 0);
-			Vector3 end = new Vector3 (i, spectrum [i], 0);
-			Debug.DrawLine (start, end);
+        for (int i = 0; i < spectrum.Length; ++i) {
+            Vector3 start = new Vector3(i, 0, 0);
+            Vector3 end = new Vector3(i, spectrum[i] * 10f, 0);
+            Debug.DrawLine (start, end);
+
+            //if(i<=4)
+            //{
+            //    spectr[i].GetChild(0).position = end;
+            //    Debug.Log(spectrum[3]);
+            //}
+            
 		}
 	}
 }

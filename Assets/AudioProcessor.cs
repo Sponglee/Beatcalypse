@@ -31,6 +31,7 @@ public class AudioProcessor : MonoBehaviour
 	// fft sampling frequency
 
 	/* log-frequency averaging controls */
+    [SerializeField]
 	private int nBand = 12;
 	// number of bands
 
