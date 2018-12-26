@@ -36,10 +36,11 @@ public class BPM : MonoBehaviour {
             BPMInstance = this;
             DontDestroyOnLoad(this.gameObject);
         }
-        calibration = Mathf.Clamp(calibration, 0, 60 / bpm /3);
         bpmRef = bpm;
-        calibrationRef = calibration;
-        beatTimer -= calibration;
+        //for BeattimerCalibration
+        //calibration = Mathf.Clamp(calibration, 0, 60 / bpm /3);
+        //calibrationRef = calibration;
+        //beatTimerCalibrated -= calibration;
     }
 
     private void Update()
@@ -48,7 +49,7 @@ public class BPM : MonoBehaviour {
     }
 
 
-    public Animator[] beatAnim;
+    public Animator beatAnim;
     //Detect wherever there's a beat
     void BeatDetection()
     {
@@ -63,9 +64,10 @@ public class BPM : MonoBehaviour {
             beatFull = true;
             beatCountFull++;
 
-            beatAnim[beatCountFull%beatAnim.Length].SetTrigger("Beat");
+            beatAnim.SetTrigger("Beat");
             //Debug.Log("BEAT");
         }
+
         //divided beat count
         beatD2 = false;
         beatIntervalD2 = beatInterval / d2N;

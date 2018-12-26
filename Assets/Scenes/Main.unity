@@ -147,7 +147,7 @@ Camera:
   m_GameObject: {fileID: 161803264}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 2
+  m_ClearFlags: 1
   m_BackGroundColor: {r: 0, g: 0, b: 0, a: 1}
   m_projectionMatrixMode: 1
   m_SensorSize: {x: 36, y: 24}
@@ -299,6 +299,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bpm: 130.03
+  calibration: 0.2
   d2N: 2
   beatAnim:
   - {fileID: 1818208454}
