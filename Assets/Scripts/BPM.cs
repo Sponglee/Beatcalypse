@@ -8,7 +8,7 @@ public class BPM : MonoBehaviour {
 
     public float bpm;
     //seconds before actual beat (calibration delay)
-    public float calibration = 0.2f;
+    public float calibration = 0f;
 
     private float beatInterval, beatTimer, beatIntervalD2, beatTimerD2;
 
@@ -38,9 +38,10 @@ public class BPM : MonoBehaviour {
         }
         bpmRef = bpm;
         //for BeattimerCalibration
-        //calibration = Mathf.Clamp(calibration, 0, 60 / bpm /3);
-        //calibrationRef = calibration;
-        //beatTimerCalibrated -= calibration;
+        calibration = Mathf.Clamp(calibration, 0, 60 / bpm / 3);
+        calibrationRef = calibration;
+        //beatInterval for calib earlier than beat
+        beatTimerD2 -= calibration;
     }
 
     private void Update()
@@ -65,18 +66,19 @@ public class BPM : MonoBehaviour {
             beatCountFull++;
 
             beatAnim.SetTrigger("Beat");
-            //Debug.Log("BEAT");
+            Debug.Log("BEAT");
         }
 
         //divided beat count
         beatD2 = false;
-        beatIntervalD2 = beatInterval / d2N;
+        
         beatTimerD2 += Time.deltaTime;
-        if(beatTimerD2>=beatIntervalD2)
+        if(beatTimerD2>=beatInterval)
         {
-            beatTimerD2 -= beatIntervalD2;
+            beatTimerD2 -= beatInterval;
             beatD2 = true;
             beatCountD2++;
+            Debug.Log("BEATD2");
             //beatAnim[1].SetTrigger("Beat");
         }
     }

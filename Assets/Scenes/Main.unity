@@ -188,7 +188,8 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.87, y: -1.78, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 1145028265}
   m_Father: {fileID: 430578228}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -201,7 +202,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 04880674dedb0f6489592c73eafc92b2, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 0542aee39b08713418bc38636fb1ae7c, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
@@ -298,8 +299,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 326890698c08e084e83f8b2bae2223c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bpm: 130.03
-  calibration: 0.2
+  bpm: 120
+  calibration: 0.3
   d2N: 2
   beatAnim: {fileID: 307316808}
 --- !u!1 &192143622
@@ -559,7 +560,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1145028265}
-  m_RootOrder: 2
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -578,14 +579,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.49019608}
-  m_RaycastTarget: 1
+  m_Color: {r: 1, g: 1, b: 1, a: 0.7058824}
+  m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300000, guid: 1b50b24bd37dd7f4e986cf2782df7529, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 39ce8054c0fc54b44886d858c1a3029c, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -692,6 +693,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rb: {fileID: 0}
   beatStop: 0
+  button0Pressed: 0
 --- !u!1 &434823319
 GameObject:
   m_ObjectHideFlags: 0
@@ -924,7 +926,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &570774151
 GameObject:
@@ -1217,7 +1219,7 @@ Canvas:
   m_GameObject: {fileID: 1145028261}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 1
+  m_RenderMode: 0
   m_Camera: {fileID: 161803266}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
@@ -1227,7 +1229,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 268
   m_TargetDisplay: 0
 --- !u!224 &1145028265
 RectTransform:
@@ -1239,11 +1241,11 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children:
+  - {fileID: 307316805}
   - {fileID: 1818208450}
   - {fileID: 2001174441}
-  - {fileID: 307316805}
-  m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_Father: {fileID: 161803267}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -2550,7 +2552,7 @@ RectTransform:
   m_Children:
   - {fileID: 1512485671}
   m_Father: {fileID: 1145028265}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -2721,7 +2723,7 @@ RectTransform:
   m_Children:
   - {fileID: 1636362791}
   m_Father: {fileID: 1145028265}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
