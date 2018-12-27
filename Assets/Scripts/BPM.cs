@@ -6,7 +6,25 @@ public class BPM : Singleton<BPM> {
 
     public static BPM BPMInstance;
 
-    public float bpm;
+    [SerializeField]
+    private float bpm;
+    public float Bpm
+    {
+        get
+        {
+            return bpm;
+        }
+
+        set
+        {
+            bpm = value;
+            //for BeattimerCalibration
+            beatInterval = 60 / bpm;
+            //beatInterval for calib earlier than beat
+            calibration = beatInterval / 3;
+
+        }
+    }
     //seconds before actual beat (calibration delay)
     public float calibration = 0f;
     public bool beatD2Stop;
@@ -37,9 +55,9 @@ public class BPM : Singleton<BPM> {
         }
         
         //for BeattimerCalibration
-        calibration = Mathf.Clamp(calibration, 0, 60 / bpm / 3);
         beatInterval = 60 / bpm;
         //beatInterval for calib earlier than beat
+        calibration = beatInterval / 3;
 
     }
 
@@ -50,6 +68,8 @@ public class BPM : Singleton<BPM> {
 
 
     public Animator beatAnim;
+
+
     //Detect wherever there's a beat
     void BeatDetection()
     {
@@ -71,7 +91,10 @@ public class BPM : Singleton<BPM> {
             beatD2 = true;
             beatD2Stop = true;
             beatCountD2++;
-            //beatAnim[1].SetTrigger("Beat");
+            if (beatCountD2 % 4 != 0)
+                beatAnim.SetTrigger("Beat");
+            else if (beatCountD2 % 4 == 0)
+                beatAnim.SetTrigger("Beat4");
         }
 
         //full beat count

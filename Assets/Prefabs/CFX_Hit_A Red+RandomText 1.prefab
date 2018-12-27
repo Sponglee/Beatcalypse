@@ -46,7 +46,7 @@ GameObject:
   - component: {fileID: 19900004}
   - component: {fileID: 11400002}
   m_Layer: 0
-  m_Name: CFX_Hit_A Red+RandomText
+  m_Name: CFX_Hit_A Red+RandomText 1
   m_TagString: FxTemporaire
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1355,8 +1355,8 @@ ParticleSystem:
       maxColor: {r: 1, g: 1, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
-        key0: {r: 1, g: 0, b: 0, a: 0.80784315}
-        key1: {r: 1, g: 0, b: 0, a: 0.80784315}
+        key0: {r: 1, g: 0.8461648, b: 0, a: 0.80784315}
+        key1: {r: 1, g: 0.8389567, b: 0, a: 0.80784315}
         key2: {r: 1, g: 1, b: 1, a: 0}
         key3: {r: 0, g: 0, b: 0, a: 0}
         key4: {r: 0, g: 0, b: 0, a: 0}

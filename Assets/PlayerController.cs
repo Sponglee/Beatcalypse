@@ -10,7 +10,8 @@ public class PlayerController : MonoBehaviour {
 
     public RectTransform leftPanel;
     public RectTransform rightPanel;
-    public GameObject bamPref;
+    public GameObject bamLeftPref;
+    public GameObject bamRightPref;
     public GameObject missPref;
 
 	// Use this for initialization
@@ -63,14 +64,14 @@ public class PlayerController : MonoBehaviour {
         {
             button0Pressed = true;
             Debug.Log("pressed 0");
-            GameObject tmp = Instantiate(bamPref,leftPanel.transform);
+            GameObject tmp = Instantiate(bamLeftPref,leftPanel.transform);
             tmp.transform.localPosition = new Vector3(Random.Range(leftPanel.rect.xMin, leftPanel.rect.xMax), Random.Range(leftPanel.rect.yMin, leftPanel.rect.yMax), 2);
         }
         else if (beatStop && button == 1 && button0Pressed)
         {
             rb.velocity = new Vector3(0, 5f, 0);
             Debug.Log("pressed 1");
-            GameObject tmp = Instantiate(bamPref, rightPanel.transform);
+            GameObject tmp = Instantiate(bamRightPref, rightPanel.transform);
             tmp.transform.localPosition = new Vector3(Random.Range(rightPanel.rect.xMin, rightPanel.rect.xMax), Random.Range(rightPanel.rect.yMin, rightPanel.rect.yMax), 2); 
             button0Pressed = false;
         }

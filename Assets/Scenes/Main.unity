@@ -204,7 +204,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 389c90b2ba10acc40afd2ce4b2d97f2c, type: 3}
+  m_audioClip: {fileID: 8300000, guid: bd7667ba19d60e2428addd798e2d52e1, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
@@ -301,7 +301,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 326890698c08e084e83f8b2bae2223c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bpm: 60
+  bpm: 90
   calibration: 10.58
   beatD2Stop: 0
   d2N: 2
@@ -572,7 +572,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 20.84, y: 9.6}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &307316806
 MonoBehaviour:
@@ -586,7 +586,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.4528302, g: 0.4528302, b: 0.4528302, a: 0.7058824}
+  m_Color: {r: 0.06762263, g: 0.06762263, b: 0.06762263, a: 0.3019608}
   m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -841,7 +841,8 @@ MonoBehaviour:
   rb: {fileID: 0}
   leftPanel: {fileID: 394342486}
   rightPanel: {fileID: 1946003344}
-  bamPref: {fileID: 100004, guid: f95ff734540a0d749be6571b6cb5b37f, type: 2}
+  bamLeftPref: {fileID: 100004, guid: f95ff734540a0d749be6571b6cb5b37f, type: 2}
+  bamRightPref: {fileID: 100004, guid: 8438c9dcbea38aa49b52dccd6af8d70f, type: 2}
   missPref: {fileID: 1118322140150654, guid: 8f07aa0f7e9e184478182cead9ed48e1, type: 2}
   beatStop: 0
   button0Pressed: 0
