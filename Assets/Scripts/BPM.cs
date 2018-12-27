@@ -2,25 +2,24 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BPM : MonoBehaviour {
+public class BPM : Singleton<BPM> {
 
     public static BPM BPMInstance;
 
     public float bpm;
     //seconds before actual beat (calibration delay)
     public float calibration = 0f;
-
-    private float beatInterval, beatTimer, beatIntervalD2, beatTimerD2;
+    public bool beatD2Stop;
 
     //fractions of beat for D2
     public int d2N=2;
-    public static bool beatFull, beatD2;
-    public static int beatCountFull, beatCountD2;
 
-    //Static references for accessing 
-    public static float bpmRef;
-    public static float calibrationRef;
+    private float beatInterval, beatTimer, beatIntervalD2, beatTimerD2;
+    public bool beatFull, beatD2;
+    public int beatCountFull, beatCountD2;
 
+   
+    
     //Debug
 
     
@@ -36,12 +35,12 @@ public class BPM : MonoBehaviour {
             BPMInstance = this;
             DontDestroyOnLoad(this.gameObject);
         }
-        bpmRef = bpm;
+        
         //for BeattimerCalibration
         calibration = Mathf.Clamp(calibration, 0, 60 / bpm / 3);
-        calibrationRef = calibration;
+        beatInterval = 60 / bpm;
         //beatInterval for calib earlier than beat
-        beatTimerD2 -= calibration;
+
     }
 
     private void Update()
@@ -55,33 +54,57 @@ public class BPM : MonoBehaviour {
     void BeatDetection()
     {
         
-        //full beat count
-        beatFull = false;
-        beatInterval = 60 / bpm;
-        beatTimer += Time.deltaTime;
-        if(beatTimer >= beatInterval)
-        {
-            beatTimer -=beatInterval;
-            beatFull = true;
-            beatCountFull++;
-
-            beatAnim.SetTrigger("Beat");
-            Debug.Log("BEAT");
-        }
-
+       
         //divided beat count
         beatD2 = false;
         
-        beatTimerD2 += Time.deltaTime;
-        if(beatTimerD2>=beatInterval)
+       
+        beatTimerD2 += Time.unscaledDeltaTime;
+
+       
+        
+        if (beatTimerD2 >= beatInterval-calibration)
         {
-            beatTimerD2 -= beatInterval;
+            Debug.Log("BEAT START " + Time.timeSinceLevelLoad);
+            beatTimer = beatTimerD2;
+            beatTimerD2 = 0;
             beatD2 = true;
+            beatD2Stop = true;
             beatCountD2++;
-            Debug.Log("BEATD2");
             //beatAnim[1].SetTrigger("Beat");
         }
+
+        //full beat count
+        beatFull = false;
+        beatTimer += Time.unscaledDeltaTime;
+
+        if (beatTimer >= beatInterval)
+        {
+           
+            Debug.Log("BEAT " + Time.timeSinceLevelLoad);
+            StartCoroutine(StopBeat());
+            beatTimer =0;
+            beatFull = true;
+            beatCountFull++;
+            //beatAnim.SetTrigger("Beat");
+        }
+
+       
+        
+       
     }
+
+   
+    //toggle beat off after calibration delay
+    public IEnumerator StopBeat()
+    {
+        beatTimerD2 = 0;
+        //wait for 2x calibration time for calibration delay
+        yield return new WaitForSecondsRealtime(calibration);
+        Debug.Log("BEAT END " + Time.timeSinceLevelLoad);
+        beatD2Stop = false;
+    }
+
 }
 
 

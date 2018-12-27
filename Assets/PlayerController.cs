@@ -5,6 +5,14 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour {
 
     public Rigidbody rb;
+
+
+
+    public RectTransform leftPanel;
+    public RectTransform rightPanel;
+    public GameObject bamPref;
+    public GameObject missPref;
+
 	// Use this for initialization
 	void Start () {
         rb = GetComponent<Rigidbody>();
@@ -14,9 +22,13 @@ public class PlayerController : MonoBehaviour {
     void Update()
     {
         //Track calibrated beat to start earlier
-        if (BPM.beatD2)
+        if (BPM.Instance.beatD2Stop)
         {
-            StartCoroutine(StopBeat());
+            beatStop = true;
+        }
+        else
+        {
+            beatStop = false;
         }
 
         if (Input.GetKeyDown(KeyCode.Z))
@@ -32,20 +44,14 @@ public class PlayerController : MonoBehaviour {
     public bool beatStop = false;
 
     #region calibrated beats
-    //toggle beat off after calibration delay
-    public IEnumerator StopBeat()
-    {
-        beatStop = true;
-        //wait for 2x calibration time for calibration delay
-        yield return new WaitForSeconds(BPM.calibrationRef * 2);
-        beatStop = false;
-    }
+    
+    
 
     //Toggle 1st button press after calibration delay
     public IEnumerator StopButton0Press()
     {
         //wait for 2x calibration time for input fault
-        yield return new WaitForSeconds(BPM.calibrationRef * 2);
+        yield return new WaitForSeconds(BPM.Instance.calibration * 2);
         button0Pressed = false;
     }
 
@@ -57,18 +63,34 @@ public class PlayerController : MonoBehaviour {
         {
             button0Pressed = true;
             Debug.Log("pressed 0");
+            GameObject tmp = Instantiate(bamPref,leftPanel.transform);
+            tmp.transform.localPosition = new Vector3(Random.Range(leftPanel.rect.xMin, leftPanel.rect.xMax), Random.Range(leftPanel.rect.yMin, leftPanel.rect.yMax), 2);
         }
         else if (beatStop && button == 1 && button0Pressed)
         {
             rb.velocity = new Vector3(0, 5f, 0);
             Debug.Log("pressed 1");
+            GameObject tmp = Instantiate(bamPref, rightPanel.transform);
+            tmp.transform.localPosition = new Vector3(Random.Range(rightPanel.rect.xMin, rightPanel.rect.xMax), Random.Range(rightPanel.rect.yMin, rightPanel.rect.yMax), 2); 
             button0Pressed = false;
         }
         else
         {
             Debug.Log("=====");
-            //rb.velocity = new Vector3(0, 0, 0);
-            StartCoroutine(StopButton0Press());
+
+            if(button == 0)
+            {
+                GameObject tmp = Instantiate(missPref, leftPanel.transform);
+                tmp.transform.localPosition = new Vector3(Random.Range(leftPanel.rect.xMin, leftPanel.rect.xMax), Random.Range(leftPanel.rect.yMin, leftPanel.rect.yMax), 2);
+                StartCoroutine(StopButton0Press());
+            }
+            else if (button == 1)
+            {
+                GameObject tmp = Instantiate(missPref, rightPanel.transform);
+                tmp.transform.localPosition = new Vector3(Random.Range(rightPanel.rect.xMin, rightPanel.rect.xMax), Random.Range(rightPanel.rect.yMin, rightPanel.rect.yMax), 2);
+                StartCoroutine(StopButton0Press());
+            }
+           
         }
 
     }
