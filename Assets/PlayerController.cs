@@ -12,7 +12,13 @@ public class PlayerController : MonoBehaviour {
     public RectTransform rightPanel;
     public GameObject bamLeftPref;
     public GameObject bamRightPref;
-    public GameObject missPref;
+    public GameObject missLeftPref;
+    public GameObject missRightPref;
+    public GameObject comboPref;
+
+    public int[] combo;
+    public int comboCount;
+    public int fever = 0;
 
 	// Use this for initialization
 	void Start () {
@@ -48,52 +54,116 @@ public class PlayerController : MonoBehaviour {
     
     
 
-    //Toggle 1st button press after calibration delay
-    public IEnumerator StopButton0Press()
-    {
-        //wait for 2x calibration time for input fault
-        yield return new WaitForSeconds(BPM.Instance.calibration * 2);
-        button0Pressed = false;
-    }
+    ////Toggle 1st button press after calibration delay
+    //public IEnumerator StopButton0Press()
+    //{
+    //    //wait for 2x calibration time for input fault
+    //    yield return new WaitForSeconds(BPM.Instance.calibration * 2);
+    //    button0Pressed = false;
+    //}
 
-    public bool button0Pressed = false;
+
+
+
+    //public bool button0Pressed = false;
+
     public void Move(int button)
     {
-
-        if (beatStop && button == 0)
+        //check for beat clicks
+        if (beatStop)
         {
-            button0Pressed = true;
-            Debug.Log("pressed 0");
-            GameObject tmp = Instantiate(bamLeftPref,leftPanel.transform);
-            tmp.transform.localPosition = new Vector3(Random.Range(leftPanel.rect.xMin, leftPanel.rect.xMax), Random.Range(leftPanel.rect.yMin, leftPanel.rect.yMax), 2);
-        }
-        else if (beatStop && button == 1 && button0Pressed)
-        {
-            rb.velocity = new Vector3(0, 5f, 0);
-            Debug.Log("pressed 1");
-            GameObject tmp = Instantiate(bamRightPref, rightPanel.transform);
-            tmp.transform.localPosition = new Vector3(Random.Range(rightPanel.rect.xMin, rightPanel.rect.xMax), Random.Range(rightPanel.rect.yMin, rightPanel.rect.yMax), 2); 
-            button0Pressed = false;
+            fever++;
         }
         else
         {
-            Debug.Log("=====");
-
-            if(button == 0)
-            {
-                GameObject tmp = Instantiate(missPref, leftPanel.transform);
-                tmp.transform.localPosition = new Vector3(Random.Range(leftPanel.rect.xMin, leftPanel.rect.xMax), Random.Range(leftPanel.rect.yMin, leftPanel.rect.yMax), 2);
-                StartCoroutine(StopButton0Press());
-            }
-            else if (button == 1)
-            {
-                GameObject tmp = Instantiate(missPref, rightPanel.transform);
-                tmp.transform.localPosition = new Vector3(Random.Range(rightPanel.rect.xMin, rightPanel.rect.xMax), Random.Range(rightPanel.rect.yMin, rightPanel.rect.yMax), 2);
-                StartCoroutine(StopButton0Press());
-            }
-           
+            fever = 0;
         }
+        //Check for combo
+        if ( button == combo[comboCount] && comboCount == 0)
+        {
+            comboCount = 1;
+            //button0Pressed = true;
+            //Debug.Log("pressed 0");
 
+            if(beatStop)
+            {
+                ComboHit(button);
+            }
+            else
+            {
+                MissedCombo(button);
+            }
+            
+        }
+        else if (button == combo[comboCount] /*&& button0Pressed*/)
+        {
+            if (beatStop)
+            {
+                ComboHit(button);
+            }
+            else
+            {
+                MissedCombo(button);
+            }
+
+            comboCount++;
+            if(comboCount>= combo.Length)
+            {
+                //reset combo
+                comboCount = 0;
+                Instantiate(comboPref);
+                rb.velocity = new Vector3(0, -25f, 0);
+                return;
+            }
+
+           
+            rb.velocity = new Vector3(0, 5f, 0);
+            Debug.Log("pressed 1");
+            
+            //button0Pressed = false;
+        }
+        else
+        {
+            comboCount = 0;
+            fever = 0;
+        }
+        
+   
+       
+    }
+
+    public void ComboHit(int button)
+    {
+        if (button == 0)
+        {
+            GameObject tmp = Instantiate(bamLeftPref, leftPanel.transform);
+            tmp.transform.localPosition = new Vector3(Random.Range(leftPanel.rect.xMin, leftPanel.rect.xMax), Random.Range(leftPanel.rect.yMin, leftPanel.rect.yMax), 2);
+        }
+        else if (button == 1)
+        {
+            GameObject tmp = Instantiate(bamRightPref, rightPanel.transform);
+            tmp.transform.localPosition = new Vector3(Random.Range(rightPanel.rect.xMin, rightPanel.rect.xMax), Random.Range(rightPanel.rect.yMin, rightPanel.rect.yMax), 2);
+        }
+    }
+
+
+    public void MissedCombo(int button)
+    {
+        //Debug.Log("=====");
+        ////reset combo
+        //comboCount = 0;
+        if (button == 0)
+        {
+            GameObject tmp = Instantiate(missLeftPref, leftPanel.transform);
+            tmp.transform.localPosition = new Vector3(Random.Range(leftPanel.rect.xMin, leftPanel.rect.xMax), Random.Range(leftPanel.rect.yMin, leftPanel.rect.yMax), 2);
+            //StartCoroutine(StopButton0Press());
+        }
+        else if (button == 1)
+        {
+            GameObject tmp = Instantiate(missRightPref, rightPanel.transform);
+            tmp.transform.localPosition = new Vector3(Random.Range(rightPanel.rect.xMin, rightPanel.rect.xMax), Random.Range(rightPanel.rect.yMin, rightPanel.rect.yMax), 2);
+            //StartCoroutine(StopButton0Press());
+        }
     }
     #endregion
 }
