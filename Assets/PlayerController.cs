@@ -72,40 +72,24 @@ public class PlayerController : MonoBehaviour {
         //check for beat clicks
         if (beatStop)
         {
+            ComboHit(button);
             fever++;
         }
         else
         {
+            MissedCombo(button);
             fever = 0;
         }
+
         //Check for combo
         if ( button == combo[comboCount] && comboCount == 0)
         {
             comboCount = 1;
             //button0Pressed = true;
             //Debug.Log("pressed 0");
-
-            if(beatStop)
-            {
-                ComboHit(button);
-            }
-            else
-            {
-                MissedCombo(button);
-            }
-            
         }
         else if (button == combo[comboCount] /*&& button0Pressed*/)
         {
-            if (beatStop)
-            {
-                ComboHit(button);
-            }
-            else
-            {
-                MissedCombo(button);
-            }
-
             comboCount++;
             if(comboCount>= combo.Length)
             {
@@ -115,12 +99,10 @@ public class PlayerController : MonoBehaviour {
                 rb.velocity = new Vector3(0, -25f, 0);
                 return;
             }
-
-           
-            rb.velocity = new Vector3(0, 5f, 0);
-            Debug.Log("pressed 1");
+            //rb.velocity = new Vector3(0, 5f, 0);
+            //Debug.Log("pressed 1");
             
-            //button0Pressed = false;
+            ////button0Pressed = false;
         }
         else
         {
