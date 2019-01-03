@@ -85,7 +85,7 @@ public class BPM : Singleton<BPM> {
         
         if (beatTimerD2 >= beatInterval-calibration)
         {
-            Debug.Log("BEAT START " + Time.timeSinceLevelLoad);
+            //Debug.Log("BEAT START " + Time.timeSinceLevelLoad);
             beatTimer = beatTimerD2;
             beatTimerD2 = 0;
             beatD2 = true;
@@ -104,7 +104,7 @@ public class BPM : Singleton<BPM> {
         if (beatTimer >= beatInterval)
         {
            
-            Debug.Log("BEAT " + Time.timeSinceLevelLoad);
+            //Debug.Log("BEAT " + Time.timeSinceLevelLoad);
             StartCoroutine(StopBeat());
             beatTimer =0;
             beatFull = true;
@@ -124,7 +124,7 @@ public class BPM : Singleton<BPM> {
         beatTimerD2 = 0;
         //wait for 2x calibration time for calibration delay
         yield return new WaitForSecondsRealtime(calibration);
-        Debug.Log("BEAT END " + Time.timeSinceLevelLoad);
+        //Debug.Log("BEAT END " + Time.timeSinceLevelLoad);
         beatD2Stop = false;
     }
 

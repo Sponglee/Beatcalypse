@@ -16,12 +16,16 @@ public class PlayerController : MonoBehaviour {
     public GameObject missRightPref;
     public GameObject comboPref;
 
+
+
     public int[] combo;
+    public int[] currentCombo;
     public int comboCount;
     public int fever = 0;
 
 	// Use this for initialization
 	void Start () {
+       
         rb = GetComponent<Rigidbody>();
 	}
 
@@ -51,8 +55,8 @@ public class PlayerController : MonoBehaviour {
     public bool beatStop = false;
 
     #region calibrated beats
-    
-    
+
+
 
     ////Toggle 1st button press after calibration delay
     //public IEnumerator StopButton0Press()
@@ -66,7 +70,7 @@ public class PlayerController : MonoBehaviour {
 
 
     //public bool button0Pressed = false;
-
+   
     public void Move(int button)
     {
         //check for beat clicks
@@ -82,37 +86,75 @@ public class PlayerController : MonoBehaviour {
         }
 
         //Check for combo
-        if ( button == combo[comboCount] && comboCount == 0)
+        if (comboCount == 0)
         {
+            currentCombo[comboCount] = button;
             comboCount = 1;
             //button0Pressed = true;
             //Debug.Log("pressed 0");
         }
-        else if (button == combo[comboCount] /*&& button0Pressed*/)
+        else 
         {
+            currentCombo[comboCount] = button;
             comboCount++;
-            if(comboCount>= combo.Length)
+            if(comboCount == 4)
             {
-                //reset combo
-                comboCount = 0;
-                Instantiate(comboPref);
-                rb.velocity = new Vector3(0, -25f, 0);
-                return;
+                Debug.Log(currentCombo + " ::: " + combo);
+                    //int[] temp = System.Array.ConvertAll(comboString.Split(','), int.Parse);
+                    if (compArr(currentCombo,combo))
+                    {
+                        Instantiate(comboPref);
+                        rb.velocity = new Vector3(0, -25f, 0);
+                        //reset combo
+                        comboCount = 0;
+                        //ClearCurrentCombo();
+                        return;
+                    }
+                    else
+                    { 
+                        //reset combo
+                        comboCount = 0;
+                        //ClearCurrentCombo();
+                        return;
+                    }
+               
             }
             //rb.velocity = new Vector3(0, 5f, 0);
             //Debug.Log("pressed 1");
             
             ////button0Pressed = false;
         }
-        else
-        {
-            comboCount = 0;
-            fever = 0;
-        }
+        //else
+        //{
+        //    comboCount = 0;
+        //    fever = 0;
+        //}
         
    
        
     }
+
+    private bool compArr<T, S>(T[] arrayA, S[] arrayB)
+    {
+        if (arrayA.Length != arrayB.Length) return false;
+
+        for (int i = 0; i < arrayA.Length; i++)
+        {
+            if (!arrayA[i].Equals(arrayB[i])) return false;
+        }
+
+        return true;
+    }
+
+    public void ClearCurrentCombo()
+    {
+        for (int i = 0; i < currentCombo.Length; i++)
+        {
+            currentCombo[i] = 99;
+        }
+    }
+
+
 
     public void ComboHit(int button)
     {

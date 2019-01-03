@@ -849,6 +849,7 @@ MonoBehaviour:
   missRightPref: {fileID: 100004, guid: 8438c9dcbea38aa49b52dccd6af8d70f, type: 2}
   comboPref: {fileID: 1558745153274916, guid: f477e23e0ff8eb44c826844fcc32a20b, type: 2}
   combo: 00000000010000000100000000000000
+  currentCombo: 00000000000000000000000000000000
   comboCount: 0
   fever: 0
   beatStop: 0
