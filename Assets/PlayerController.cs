@@ -26,6 +26,8 @@ public class PlayerController : MonoBehaviour {
 
     public bool buttonPress = false;
     public bool checkBeat = false;
+    //for preventing spam
+    public int checkBeatCount = -1;
     //for checking beat presses
     public bool beatStop = false;
 
@@ -111,6 +113,21 @@ public class PlayerController : MonoBehaviour {
     //Check for press timing, fever, add indexes to tempCombo
     public void Move(int button)
     {
+        if(BPM.Instance.beatCountCalib != checkBeatCount)
+        {
+            checkBeatCount = BPM.Instance.beatCountCalib;
+        }
+        //Reset combos and fever on spam
+        else
+        {
+            Debug.Log("CLEAR");
+            //HERE INPUT RESET PIZZAZ
+            ClearCurrentCombo();
+            comboCount = 0;
+            currentCombo.Clear();
+            fever = 0;
+        }
+
         //check for beat clicks
         if (beatStop)
         {
@@ -129,11 +146,11 @@ public class PlayerController : MonoBehaviour {
             currentCombo.Add(button);
             comboCount = 1;
         }
-        else 
+        else
         {
             currentCombo.Add(button);
             comboCount++;
-            if(comboCount >= 4)
+            if (comboCount >= 4)
             {
                 //Make list to array and grab last 4 elements
                 int[] tempCombo = currentCombo.ToArray();
@@ -148,13 +165,12 @@ public class PlayerController : MonoBehaviour {
         //    comboCount = 0;
         //    fever = 0;
         //}
-        
-   
-       
+
+
     }
 
 
-   //Compare arrays
+    //Compare arrays
     private bool compArr<T, S>(T[] arrayA, S[] arrayB)
     {
         if (arrayA.Length != arrayB.Length) return false;
