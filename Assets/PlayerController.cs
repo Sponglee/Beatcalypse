@@ -60,6 +60,8 @@ public class PlayerController : MonoBehaviour {
                     comboCount = 0;
                     currentCombo.Clear();
                     checkBeat = false;
+                    // Fever bonus 
+                    fever++;
                 }
                 else
                 {
@@ -75,6 +77,7 @@ public class PlayerController : MonoBehaviour {
                         ClearCurrentCombo();
                         comboCount = 0;
                         currentCombo.Clear();
+                        fever = 0;
                     }
                     checkBeat = false;
                 }
@@ -125,19 +128,19 @@ public class PlayerController : MonoBehaviour {
             ClearCurrentCombo();
             //comboCount = 0;
             //currentCombo.Clear();
-            fever = 0;
+          
         }
 
         //check for beat clicks
         if (beatStop)
         {
             ComboHit(button);
-            fever++;
+            
         }
         else
         {
             MissedCombo(button);
-            fever = 0;
+            
         }
 
         //Remember input sequence for combo

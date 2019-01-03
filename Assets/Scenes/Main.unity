@@ -301,7 +301,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 326890698c08e084e83f8b2bae2223c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bpm: 109.99
+  bpm: 89.09
   calibration: 10.58
   beatCalibStop: 0
   beatEnd: 0
