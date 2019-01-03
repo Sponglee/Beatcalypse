@@ -113,9 +113,9 @@ public class PlayerController : MonoBehaviour {
     //Check for press timing, fever, add indexes to tempCombo
     public void Move(int button)
     {
-        if(BPM.Instance.beatCountCalib != checkBeatCount)
+        if(BPM.Instance.beatCountFull != checkBeatCount)
         {
-            checkBeatCount = BPM.Instance.beatCountCalib;
+            checkBeatCount = BPM.Instance.beatCountFull;
         }
         //Reset combos and fever on spam
         else
@@ -123,8 +123,8 @@ public class PlayerController : MonoBehaviour {
             Debug.Log("CLEAR");
             //HERE INPUT RESET PIZZAZ
             ClearCurrentCombo();
-            comboCount = 0;
-            currentCombo.Clear();
+            //comboCount = 0;
+            //currentCombo.Clear();
             fever = 0;
         }
 
