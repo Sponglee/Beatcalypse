@@ -27,14 +27,15 @@ public class BPM : Singleton<BPM> {
     }
     //seconds before actual beat (calibration delay)
     public float calibration = 0f;
-    public bool beatD2Stop;
+    public bool beatCalibStop;
+    public bool beatEnd = false;
 
-    //fractions of beat for D2
-    public int d2N=2;
+    //fractions of beat for Calibrated beat
+    public int CalibN=2;
 
-    private float beatInterval, beatTimer, beatIntervalD2, beatTimerD2;
-    public bool beatFull, beatD2;
-    public int beatCountFull, beatCountD2;
+    private float beatInterval, beatTimer, beatIntervalCalib, beatTimerCalib;
+    public bool beatFull, beatCalib;
+    public int beatCountFull, beatCountCalib;
 
    
     
@@ -76,24 +77,24 @@ public class BPM : Singleton<BPM> {
         
        
         //divided beat count
-        beatD2 = false;
+        beatCalib = false;
         
        
-        beatTimerD2 += Time.unscaledDeltaTime;
+        beatTimerCalib += Time.unscaledDeltaTime;
 
        
         
-        if (beatTimerD2 >= beatInterval-calibration)
+        if (beatTimerCalib >= beatInterval-calibration)
         {
-            //Debug.Log("BEAT START " + Time.timeSinceLevelLoad);
-            beatTimer = beatTimerD2;
-            beatTimerD2 = 0;
-            beatD2 = true;
-            beatD2Stop = true;
-            beatCountD2++;
-            if (beatCountD2 % 4 != 0)
+            Debug.Log("BEAT START " + Time.timeSinceLevelLoad);
+            beatTimer = beatTimerCalib;
+            beatTimerCalib = 0;
+            beatCalib = true;
+            beatCalibStop = true;
+            beatCountCalib++;
+            if (beatCountCalib % 4 != 0)
                 beatAnim.SetTrigger("Beat");
-            else if (beatCountD2 % 4 == 0)
+            else if (beatCountCalib % 4 == 0)
                 beatAnim.SetTrigger("Beat4");
         }
 
@@ -103,9 +104,10 @@ public class BPM : Singleton<BPM> {
 
         if (beatTimer >= beatInterval)
         {
-           
-            //Debug.Log("BEAT " + Time.timeSinceLevelLoad);
+
+            Debug.Log("BEAT " + Time.timeSinceLevelLoad);
             StartCoroutine(StopBeat());
+            beatEnd = false;
             beatTimer =0;
             beatFull = true;
             beatCountFull++;
@@ -121,11 +123,13 @@ public class BPM : Singleton<BPM> {
     //toggle beat off after calibration delay
     public IEnumerator StopBeat()
     {
-        beatTimerD2 = 0;
+       
+        beatTimerCalib = 0;
         //wait for 2x calibration time for calibration delay
         yield return new WaitForSecondsRealtime(calibration);
         //Debug.Log("BEAT END " + Time.timeSinceLevelLoad);
-        beatD2Stop = false;
+        beatCalibStop = false;
+        beatEnd = true;
     }
 
 }
