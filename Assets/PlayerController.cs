@@ -19,9 +19,12 @@ public class PlayerController : MonoBehaviour {
 
 
     public int[] combo;
-    public int[] currentCombo;
+    public int[] tempSubCombo;
+    public List<int> currentCombo;
     public int comboCount;
     public int fever = 0;
+
+    public bool buttonPress = false;
 
 	// Use this for initialization
 	void Start () {
@@ -36,21 +39,34 @@ public class PlayerController : MonoBehaviour {
         if (BPM.Instance.beatD2Stop)
         {
             beatStop = true;
+       
         }
         else
         {
             beatStop = false;
+           
         }
+
+
+        //if(BPM.Instance.beatD2Stop && !buttonPress)
+        //{
+        //    ClearCurrentCombo();
+        //}
+
 
         if (Input.GetKeyDown(KeyCode.Z))
         {
+            buttonPress = true;
             Move(0);
         }
         if (Input.GetKeyDown(KeyCode.M))
         {
+            buttonPress = true;
             Move(1);
         }
 
+
+        
     }
     public bool beatStop = false;
 
@@ -88,36 +104,52 @@ public class PlayerController : MonoBehaviour {
         //Check for combo
         if (comboCount == 0)
         {
-            currentCombo[comboCount] = button;
+            //Lock thread to avoid errors
+            
+                currentCombo.Add(button);
             comboCount = 1;
             //button0Pressed = true;
             //Debug.Log("pressed 0");
         }
         else 
         {
-            currentCombo[comboCount] = button;
+          
+            currentCombo.Add(button);
             comboCount++;
-            if(comboCount == 4)
+            if(comboCount >= 4)
             {
-                Debug.Log(currentCombo + " ::: " + combo);
-                    //int[] temp = System.Array.ConvertAll(comboString.Split(','), int.Parse);
-                    if (compArr(currentCombo,combo))
-                    {
-                        Instantiate(comboPref);
-                        rb.velocity = new Vector3(0, -25f, 0);
-                        //reset combo
-                        comboCount = 0;
-                        //ClearCurrentCombo();
-                        return;
-                    }
-                    else
-                    { 
-                        //reset combo
-                        comboCount = 0;
-                        //ClearCurrentCombo();
-                        return;
-                    }
                
+                int[] tempCombo = currentCombo.ToArray();
+                Debug.Log(tempCombo.Length + " ::: " + combo);
+
+                
+                for (int i = 0; i < 4; i++)
+                {
+                    tempSubCombo[i] = tempCombo[tempCombo.Length - 4 + i];
+                }
+                //int[] temp = System.Array.ConvertAll(comboString.Split(','), int.Parse);
+                if (compArr(tempSubCombo, combo))
+                {
+                    Instantiate(comboPref);
+                    rb.velocity = new Vector3(0, -25f, 0);
+                    //reset combo
+                    //comboCount = 0;
+                    ClearCurrentCombo();
+                    for (int i = 0; i < tempSubCombo.Length; i++)
+                    {
+                        tempSubCombo[i] = 99;
+                    }
+                    return;
+                }
+                else
+                {
+                    for (int i = 0; i < tempSubCombo.Length; i++)
+                    {
+                        tempSubCombo[i] = 99;
+                    }
+                    return;
+                }
+                   
             }
             //rb.velocity = new Vector3(0, 5f, 0);
             //Debug.Log("pressed 1");
@@ -134,6 +166,8 @@ public class PlayerController : MonoBehaviour {
        
     }
 
+
+   
     private bool compArr<T, S>(T[] arrayA, S[] arrayB)
     {
         if (arrayA.Length != arrayB.Length) return false;
@@ -146,12 +180,21 @@ public class PlayerController : MonoBehaviour {
         return true;
     }
 
+    public  int[] SubArray(int[] data, int index, int length)
+    {
+        int[] result = new int[length];
+        System.Array.Copy(data, index, result, 0, length);
+        return result;
+    }
+
+
+
+
     public void ClearCurrentCombo()
     {
-        for (int i = 0; i < currentCombo.Length; i++)
-        {
-            currentCombo[i] = 99;
-        }
+        comboCount = 0;
+        currentCombo.Clear();
+       
     }
 
 
@@ -191,3 +234,6 @@ public class PlayerController : MonoBehaviour {
     }
     #endregion
 }
+
+
+
