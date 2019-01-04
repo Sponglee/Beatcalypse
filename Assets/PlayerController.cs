@@ -17,8 +17,15 @@ public class PlayerController : MonoBehaviour {
     public GameObject comboPref;
 
 
+    [System.Serializable]
+    public class Combos
+    {
+        public int[] combo;
+    }
+    public Combos[] ComboList;
 
-    public int[] combo;
+    //public int[] combo;
+
     public int[] tempSubCombo;
     public List<int> currentCombo;
     public int comboCount;
@@ -34,6 +41,8 @@ public class PlayerController : MonoBehaviour {
 
 
     void Start () {
+
+        
        
         rb = GetComponent<Rigidbody>();
 	}
@@ -48,39 +57,42 @@ public class PlayerController : MonoBehaviour {
             //Check for combos once (checkbeat prevents multiple checks)
             if(checkBeat)
             {
-                
+
                 //Check  if same combos combos
-                if (compArr(tempSubCombo, combo))
+                foreach (Combos tmpCombo in ComboList)
                 {
-                    //pizzaz
-                    Instantiate(comboPref);
-                    rb.velocity = new Vector3(0, -25f, 0);
-                    //reset combo temp
-                    ClearCurrentCombo();
-                    comboCount = 0;
-                    currentCombo.Clear();
-                    checkBeat = false;
-                    // Fever bonus 
-                    fever++;
-                }
-                else
-                {
-                    // Reset buttonPress on beat
-                    if(buttonPress)
+                   
+                    if (compArr(tempSubCombo, tmpCombo.combo))
                     {
-                        buttonPress = false;  
-                    }
-                    //If nothing is pressed - reset temp combo and curr combo
-                    else if(!buttonPress)
-                    {
-                        //HERE INPUT RESET PIZZAZ
+                        //pizzaz
+                        Instantiate(comboPref);
+                        rb.velocity = new Vector3(0, -25f, 0);
+                        //reset combo temp
                         ClearCurrentCombo();
                         comboCount = 0;
                         currentCombo.Clear();
-                        fever = 0;
+                        checkBeat = false;
+                        // Fever bonus 
+                        fever++;
+                        return;
                     }
-                    checkBeat = false;
+
                 }
+                // Reset buttonPress on beat
+                if (buttonPress)
+                {
+                    buttonPress = false;
+                }
+                //If nothing is pressed - reset temp combo and curr combo
+                else if (!buttonPress)
+                {
+                    //HERE INPUT RESET PIZZAZ
+                    ClearCurrentCombo();
+                    comboCount = 0;
+                    currentCombo.Clear();
+                    fever = 0;
+                }
+                checkBeat = false;
             }
         }
         else

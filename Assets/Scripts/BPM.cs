@@ -86,7 +86,7 @@ public class BPM : Singleton<BPM> {
         
         if (beatTimerCalib >= beatInterval-calibration)
         {
-            Debug.Log("BEAT START " + Time.timeSinceLevelLoad);
+            //Debug.Log("BEAT START " + Time.timeSinceLevelLoad);
             beatTimer = beatTimerCalib;
             beatTimerCalib = 0;
             beatCalib = true;
@@ -105,7 +105,7 @@ public class BPM : Singleton<BPM> {
         if (beatTimer >= beatInterval)
         {
 
-            Debug.Log("BEAT " + Time.timeSinceLevelLoad);
+            //Debug.Log("BEAT " + Time.timeSinceLevelLoad);
             StartCoroutine(StopBeat());
             beatEnd = false;
             beatTimer =0;
