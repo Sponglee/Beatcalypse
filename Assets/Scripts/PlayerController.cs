@@ -14,8 +14,9 @@ public class PlayerController : MonoBehaviour {
     public GameObject bamRightPref;
     public GameObject missLeftPref;
     public GameObject missRightPref;
-    public GameObject comboPref;
 
+    public GameObject[] comboPrefs;
+    public Animator playerAnim;
 
     [System.Serializable]
     public class Combos
@@ -64,16 +65,10 @@ public class PlayerController : MonoBehaviour {
                    
                     if (compArr(tempSubCombo, tmpCombo.combo))
                     {
-                        //pizzaz
-                        Instantiate(comboPref);
-                        rb.velocity = new Vector3(0, -25f, 0);
-                        //reset combo temp
-                        ClearCurrentCombo();
-                        comboCount = 0;
-                        currentCombo.Clear();
-                        checkBeat = false;
-                        // Fever bonus 
-                        fever++;
+                        int ListIDX = System.Array.IndexOf(ComboList, tmpCombo);
+                        Debug.Log(ListIDX);
+
+                        ComboInvoke(ListIDX);
                         return;
                     }
 
@@ -123,6 +118,55 @@ public class PlayerController : MonoBehaviour {
 
 
         
+    }
+
+    
+    //Invoke combo
+    public void ComboInvoke(int index)
+    {
+        switch (index)
+        {
+            case 0:
+                {
+                    rb.velocity = new Vector3(0, 10f, 0);
+                    //pizzaz
+                    Instantiate(comboPrefs[index], gameObject.transform);
+                    playerAnim.SetTrigger("Walk");
+                    break;
+                }
+            case 1:
+                {
+                    rb.velocity = new Vector3(10f, 0, 0);
+                    //pizzaz
+                    Instantiate(comboPrefs[index], gameObject.transform);
+                    playerAnim.SetTrigger("Run");
+                    break;
+                }
+            case 2:
+                {
+                    rb.velocity = new Vector3(-10f, 0, 0);
+                    //pizzaz
+                    Instantiate(comboPrefs[index],gameObject.transform);
+                    playerAnim.SetTrigger("Run");
+                    break;
+                }
+            case 3:
+                {
+                    rb.velocity = new Vector3(0, -25f, 0);
+                    //pizzaz
+                    Instantiate(comboPrefs[index], gameObject.transform);
+                    break;
+                }
+        }
+
+        
+        //reset combo temp
+        ClearCurrentCombo();
+        comboCount = 0;
+        currentCombo.Clear();
+        checkBeat = false;
+        // Fever bonus 
+        fever++;
     }
     
     //Check for press timing, fever, add indexes to tempCombo
