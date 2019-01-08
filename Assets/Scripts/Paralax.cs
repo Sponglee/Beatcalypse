@@ -10,7 +10,7 @@ public class Paralax : MonoBehaviour {
     private float lastCameraX;
     private Transform cameraTransform;
     private Transform[] layers;
-    private float viewZone = 10;
+    private float viewZone = 5;
     private int leftIndex;
     private int rightIndex;
 
@@ -35,9 +35,9 @@ public class Paralax : MonoBehaviour {
 
 
 
-        lastCameraX = cameraTransform.position.x;
         float deltaX = cameraTransform.position.x - lastCameraX;
         transform.position += Vector3.right * (deltaX * paralaxSpeed);
+        lastCameraX = cameraTransform.position.x;
 
         if (cameraTransform.position.x < (layers[leftIndex].transform.position.x + viewZone))
         {
@@ -45,6 +45,7 @@ public class Paralax : MonoBehaviour {
         }
         else if (cameraTransform.position.x > (layers[rightIndex].transform.position.x - viewZone))
         {
+            Debug.Log(cameraTransform.position.x + " : " + (layers[rightIndex].transform.position.x - viewZone));
             ScrollRight();
         }
 
@@ -60,7 +61,7 @@ public class Paralax : MonoBehaviour {
 
     private void ScrollLeft()
     {
-        Debug.Log("SCROLLLEFT");
+        //Debug.Log("SCROLLLEFT");
         int lastRight = rightIndex;
         layers[rightIndex].position = Vector3.right * (layers[leftIndex].position.x - backgroundSize);
         leftIndex = rightIndex;
@@ -75,7 +76,7 @@ public class Paralax : MonoBehaviour {
     private void ScrollRight()
     {
 
-        Debug.Log("SCROLLRIGHT");
+        //Debug.Log("SCROLLRIGHT");
         int lastLeft = leftIndex;
         layers[leftIndex].position = Vector3.right * (layers[rightIndex].position.x + backgroundSize);
         rightIndex = leftIndex;

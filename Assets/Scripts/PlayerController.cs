@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour {
 
@@ -295,6 +296,15 @@ public class PlayerController : MonoBehaviour {
             GameObject tmp = Instantiate(missRightPref, rightPanel.transform);
             tmp.transform.localPosition = new Vector3(Random.Range(rightPanel.rect.xMin, rightPanel.rect.xMax), Random.Range(rightPanel.rect.yMin, rightPanel.rect.yMax), 2);
         }
+    }
+
+
+
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.CompareTag("Finish"))
+            SceneManager.LoadScene("Main");
     }
 }
 
