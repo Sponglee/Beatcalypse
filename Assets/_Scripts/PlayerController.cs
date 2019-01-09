@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour {
 
@@ -31,7 +32,31 @@ public class PlayerController : MonoBehaviour {
     public int[] tempSubCombo;
     public List<int> currentCombo;
     public int comboCount;
-    public int fever = 0;
+
+    public Text feverText;
+    private int fever = 0;
+    public int Fever
+    {
+        get
+        {
+            return fever;
+        }
+
+        set
+        {
+            fever = value;
+            feverText.text = value.ToString();
+            if(fever>=4)
+            {
+                feverText.transform.parent.GetComponent<Image>().color = Color.yellow;
+            }
+            else
+            {
+                feverText.transform.parent.GetComponent<Image>().color = Color.black;
+            }
+        }
+    }
+
 
     public bool buttonPress = false;
     public bool checkBeat = false;
@@ -40,12 +65,12 @@ public class PlayerController : MonoBehaviour {
     //for checking beat presses
     public bool beatStop = false;
 
-
+    
 
     void Start () {
 
-        
-       
+
+        feverText.text = "0";
         rb = GetComponent<Rigidbody>();
 	}
 
@@ -73,7 +98,9 @@ public class PlayerController : MonoBehaviour {
                         return;
                     }
 
+
                 }
+               
                 // Reset buttonPress on beat
                 if (buttonPress)
                 {
@@ -86,7 +113,8 @@ public class PlayerController : MonoBehaviour {
                     ClearCurrentCombo();
                     comboCount = 0;
                     currentCombo.Clear();
-                    fever = 0;
+                    
+
                 }
                 checkBeat = false;
             }
@@ -127,36 +155,69 @@ public class PlayerController : MonoBehaviour {
     {
         switch (index)
         {
+           
             case 0:
-                {
-                    rb.velocity = new Vector3(10f, 10f, 0);
-                    //pizzaz
-                    Instantiate(comboPrefs[index], gameObject.transform);
-                    playerAnim.SetTrigger("Walk");
-                    break;
-                }
-            case 1:
                 {
                     rb.velocity = new Vector3(10f, 0, 0);
                     //pizzaz
                     Instantiate(comboPrefs[index], gameObject.transform);
                     playerAnim.SetTrigger("Run");
+                    // Fever bonus 
+                    Fever++;
                     break;
                 }
-            case 2:
+            case 1:
                 {
                     rb.velocity = new Vector3(-10f, 0, 0);
                     //pizzaz
                     Instantiate(comboPrefs[index],gameObject.transform);
                     playerAnim.SetTrigger("Run");
+                    // Fever bonus 
+                    Fever++;
+                    break;
+                }
+            case 2:
+                {
+                    rb.velocity = new Vector3(10f, 7f, 0);
+                    //pizzaz
+                    Instantiate(comboPrefs[index], gameObject.transform);
+                    playerAnim.SetTrigger("Walk");
+                    // Fever bonus 
+                    Fever++;
                     break;
                 }
             case 3:
                 {
-                    rb.velocity = new Vector3(0, -25f, 0);
+                    Instantiate(comboPrefs[index], gameObject.transform);
+                    rb.velocity = new Vector3(-10f, 7f, 0);
+                    //pizzaz
+                    playerAnim.SetTrigger("Walk");
+                    // Fever bonus 
+                    Fever++;
+                    break;
+                }
+            case 4:
+                {
+                    //rb.velocity = new Vector3(0, -25f, 0);
                     //pizzaz
                     Instantiate(comboPrefs[index], gameObject.transform);
+                    playerAnim.SetTrigger("Attack");
+                    // Fever bonus 
+                    Fever++;
                     break;
+                }
+            case 5:
+                {
+                    if(Fever>=4)
+                    {
+                        rb.velocity = new Vector3(12f, 0, 0);
+                        //pizzaz
+                        Instantiate(comboPrefs[index], gameObject.transform);
+                        playerAnim.SetTrigger("Attack");
+                        Fever = 0;
+                    }
+                    break;
+                  
                 }
         }
 
@@ -166,8 +227,7 @@ public class PlayerController : MonoBehaviour {
         comboCount = 0;
         currentCombo.Clear();
         checkBeat = false;
-        // Fever bonus 
-        fever++;
+       
     }
     
     //Check for press timing, fever, add indexes to tempCombo
