@@ -34,6 +34,8 @@ public class PlayerController : MonoBehaviour {
     public int comboCount;
 
     public Text feverText;
+    //for enemy pushbacks
+    public bool FeverHitBool = false;
     private int fever = 0;
     public int Fever
     {
@@ -48,11 +50,13 @@ public class PlayerController : MonoBehaviour {
             feverText.text = value.ToString();
             if(fever>=4)
             {
-                feverText.transform.parent.GetComponent<Image>().color = Color.yellow;
+                feverText.transform.parent.GetChild(0).GetComponent<Image>().color = Color.yellow;
+                feverText.transform.parent.GetChild(0).GetComponent<Animator>().SetBool("Fever",true);
             }
             else
             {
-                feverText.transform.parent.GetComponent<Image>().color = Color.black;
+                feverText.transform.parent.GetChild(0).GetComponent<Image>().color = Color.black;
+                feverText.transform.parent.GetChild(0).GetComponent<Animator>().SetBool("Fever", false);
             }
         }
     }
@@ -62,6 +66,10 @@ public class PlayerController : MonoBehaviour {
     public bool checkBeat = false;
     //for preventing spam
     public int checkBeatCount = -1;
+
+    public float moveTimeOut;
+    public float calibTime;
+    
     //for checking beat presses
     public bool beatStop = false;
 
@@ -69,6 +77,9 @@ public class PlayerController : MonoBehaviour {
 
     void Start () {
 
+        //Spam prevention
+        moveTimeOut = BPM.Instance.calibration;
+        calibTime = moveTimeOut;
 
         feverText.text = "0";
         rb = GetComponent<Rigidbody>();
@@ -77,6 +88,7 @@ public class PlayerController : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
+        moveTimeOut -= Time.unscaledDeltaTime;
         //Track calibrated beat to start earlier
         if (BPM.Instance.beatCalibStop)
         {
@@ -178,7 +190,7 @@ public class PlayerController : MonoBehaviour {
                 }
             case 2:
                 {
-                    rb.velocity = new Vector3(10f, 7f, 0);
+                    rb.velocity = new Vector3(7f, 10f, 0);
                     //pizzaz
                     Instantiate(comboPrefs[index], gameObject.transform);
                     playerAnim.SetTrigger("Walk");
@@ -189,7 +201,7 @@ public class PlayerController : MonoBehaviour {
             case 3:
                 {
                     Instantiate(comboPrefs[index], gameObject.transform);
-                    rb.velocity = new Vector3(-10f, 7f, 0);
+                    rb.velocity = new Vector3(-7f, 10f, 0);
                     //pizzaz
                     playerAnim.SetTrigger("Walk");
                     // Fever bonus 
@@ -210,10 +222,12 @@ public class PlayerController : MonoBehaviour {
                 {
                     if(Fever>=4)
                     {
-                        rb.velocity = new Vector3(12f, 0, 0);
+                        rb.velocity = new Vector3(12f, 2f, 0);
+                        FeverHitBool = true;
                         //pizzaz
                         Instantiate(comboPrefs[index], gameObject.transform);
                         playerAnim.SetTrigger("Attack");
+                        playerAnim.SetTrigger("AttackExit");
                         Fever = 0;
                     }
                     break;
@@ -248,26 +262,15 @@ public class PlayerController : MonoBehaviour {
           
         }
 
-        //check for beat clicks
-        if (beatStop)
-        {
-            ComboHit(button);
-            
-        }
-        else
-        {
-            MissedCombo(button);
-            
-        }
-
         //Remember input sequence for combo
         if (comboCount == 0)
         {
             currentCombo.Add(button);
             comboCount = 1;
         }
-        else
+        else if(moveTimeOut<=0)
         {
+            moveTimeOut = calibTime;
             currentCombo.Add(button);
             comboCount++;
             if (comboCount >= 4)
@@ -280,6 +283,27 @@ public class PlayerController : MonoBehaviour {
                 }
             }
         }
+        else
+        {
+            ClearCurrentCombo();
+            comboCount = 0;
+            currentCombo.Clear();
+            Fever = 0;
+        }
+
+        //check for beat clicks
+        if (beatStop)
+        {
+            ComboHit(button);
+            
+        }
+        else
+        {
+            MissedCombo(button);
+            
+        }
+
+       
         //else
         //{
         //    comboCount = 0;
