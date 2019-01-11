@@ -190,7 +190,7 @@ public class GameManager : Singleton<GameManager> {
                 }
             case 2:
                 {
-                    rb.velocity = new Vector3(5f, 9f, 0);
+                    rb.velocity = new Vector3(4f, 7f, 0);
                     //pizzaz
                     Instantiate(comboPrefs[index], gameObject.transform);
                     playerAnim.SetTrigger("Walk");
@@ -201,7 +201,7 @@ public class GameManager : Singleton<GameManager> {
             case 3:
                 {
                     Instantiate(comboPrefs[index], gameObject.transform);
-                    rb.velocity = new Vector3(-5f, 9f, 0);
+                    rb.velocity = new Vector3(-4f, 7f, 0);
                     //pizzaz
                     playerAnim.SetTrigger("Walk");
                     // Fever bonus 
@@ -214,10 +214,7 @@ public class GameManager : Singleton<GameManager> {
                     //pizzaz
                     Instantiate(comboPrefs[index], gameObject.transform);
                     playerAnim.SetTrigger("Attack");
-                    if(PlayerManager.Instance.EnemiesInRange)
-                    {
-                        PlayerManager.Instance.PlayerAttack();
-                    }
+                    PlayerManager.Instance.PlayerAttack();
 
                     // Fever bonus 
                     Fever++;
@@ -232,6 +229,8 @@ public class GameManager : Singleton<GameManager> {
                         //pizzaz
                         Instantiate(comboPrefs[index], gameObject.transform);
                         playerAnim.SetTrigger("Attack");
+                        //player attack with combo switch (true)
+                        PlayerManager.Instance.PlayerAttack(true);
                         playerAnim.SetTrigger("AttackExit");
                         Fever = 0;
                     }
