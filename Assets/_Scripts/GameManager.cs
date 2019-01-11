@@ -4,12 +4,12 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class PlayerController : MonoBehaviour {
+public class GameManager : Singleton<GameManager> {
 
     public Rigidbody rb;
 
 
-
+    public Transform vCamera;
     public RectTransform leftPanel;
     public RectTransform rightPanel;
     public GameObject bamLeftPref;
@@ -82,7 +82,7 @@ public class PlayerController : MonoBehaviour {
         calibTime = moveTimeOut;
 
         feverText.text = "0";
-        rb = GetComponent<Rigidbody>();
+       
 	}
 
     // Update is called once per frame
@@ -190,7 +190,7 @@ public class PlayerController : MonoBehaviour {
                 }
             case 2:
                 {
-                    rb.velocity = new Vector3(7f, 10f, 0);
+                    rb.velocity = new Vector3(5f, 9f, 0);
                     //pizzaz
                     Instantiate(comboPrefs[index], gameObject.transform);
                     playerAnim.SetTrigger("Walk");
@@ -201,7 +201,7 @@ public class PlayerController : MonoBehaviour {
             case 3:
                 {
                     Instantiate(comboPrefs[index], gameObject.transform);
-                    rb.velocity = new Vector3(-7f, 10f, 0);
+                    rb.velocity = new Vector3(-5f, 9f, 0);
                     //pizzaz
                     playerAnim.SetTrigger("Walk");
                     // Fever bonus 
@@ -214,6 +214,11 @@ public class PlayerController : MonoBehaviour {
                     //pizzaz
                     Instantiate(comboPrefs[index], gameObject.transform);
                     playerAnim.SetTrigger("Attack");
+                    if(PlayerManager.Instance.EnemiesInRange)
+                    {
+                        PlayerManager.Instance.PlayerAttack();
+                    }
+
                     // Fever bonus 
                     Fever++;
                     break;
@@ -390,6 +395,9 @@ public class PlayerController : MonoBehaviour {
         if(collision.gameObject.CompareTag("Finish"))
             SceneManager.LoadScene("Main");
     }
+
+   
+
 }
 
 

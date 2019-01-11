@@ -16,7 +16,7 @@ public class Paralax : MonoBehaviour {
 
     private void Start()
     {
-        cameraTransform = Camera.main.transform;
+        cameraTransform = GameManager.Instance.vCamera;
         lastCameraX = cameraTransform.position.x;
         layers = new Transform[transform.childCount];
         for (int i = 0; i < transform.childCount; i++)
