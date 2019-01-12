@@ -1,12 +1,42 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerManager : Singleton<PlayerManager> {
 
+    public GameObject fltText;
+    public Slider hpSlider;
+    
+    private float maxHp;
     [SerializeField]
-    private float hp = 10f;
-    public float Hp { get { return hp; } set { hp = value; } }
+    private float hp;
+    public float Hp
+    {
+        get { return hp; }
+        set
+        {
+            GameObject tmp = Instantiate(fltText, transform.position, Quaternion.identity);
+            tmp.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = (hp - value).ToString();
+         
+            //Debug.Log("HP " + hp + " ::: " + value);
+            StartCoroutine(StopSlider(value / maxHp));
+            hp = value;
+            if (hp <= 0)
+            {
+                //GAMEOVER
+            }
+        }
+    }
+
+    public IEnumerator StopSlider(float sliderValue)
+    {
+        while (hpSlider.value > sliderValue)
+        {
+            hpSlider.value -= 0.1f;
+            yield return null;
+        }
+    }
 
     public float attackPower = 5;
 
@@ -17,6 +47,7 @@ public class PlayerManager : Singleton<PlayerManager> {
 
     private void Start()
     {
+        maxHp = hp;
         enemies = new List<Collider>();
     }
 

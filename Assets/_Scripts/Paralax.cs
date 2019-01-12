@@ -10,7 +10,7 @@ public class Paralax : MonoBehaviour {
     private float lastCameraX;
     private Transform cameraTransform;
     private Transform[] layers;
-    private float viewZone = 5;
+    private float viewZone = 6;
     private int leftIndex;
     private int rightIndex;
 
