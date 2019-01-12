@@ -167,9 +167,13 @@ public class GameManager : Singleton<GameManager> {
     {
         switch (index)
         {
-           
+           //Move left
             case 0:
                 {
+                    ////SetDef to false;
+                    //PlayerManager.Instance.PlayerDef = false;
+                    //playerAnim.SetBool("Block", false);
+
                     rb.velocity = new Vector3(10f, 0, 0);
                     //pizzaz
                     Instantiate(comboPrefs[index], gameObject.transform);
@@ -178,8 +182,13 @@ public class GameManager : Singleton<GameManager> {
                     Fever++;
                     break;
                 }
+            //Move right
             case 1:
                 {
+                    ////SetDef to false;
+                    //PlayerManager.Instance.PlayerDef = false;
+                    //playerAnim.SetBool("Block", false);
+
                     rb.velocity = new Vector3(-10f, 0, 0);
                     //pizzaz
                     Instantiate(comboPrefs[index],gameObject.transform);
@@ -188,8 +197,13 @@ public class GameManager : Singleton<GameManager> {
                     Fever++;
                     break;
                 }
+            //Jump left
             case 2:
                 {
+                    //SetDef to false;
+                    PlayerManager.Instance.PlayerDef = false;
+                    playerAnim.SetBool("Block", false);
+
                     rb.velocity = new Vector3(4f, 7f, 0);
                     //pizzaz
                     Instantiate(comboPrefs[index], gameObject.transform);
@@ -198,8 +212,13 @@ public class GameManager : Singleton<GameManager> {
                     Fever++;
                     break;
                 }
+            //Jump right
             case 3:
                 {
+                    //SetDef to false;
+                    PlayerManager.Instance.PlayerDef = false;
+                    playerAnim.SetBool("Block", false);
+
                     Instantiate(comboPrefs[index], gameObject.transform);
                     rb.velocity = new Vector3(-4f, 7f, 0);
                     //pizzaz
@@ -208,8 +227,13 @@ public class GameManager : Singleton<GameManager> {
                     Fever++;
                     break;
                 }
+            //Attack
             case 4:
                 {
+                    //SetDef to false;
+                    PlayerManager.Instance.PlayerDef = false;
+                    playerAnim.SetBool("Block", false);
+
                     //rb.velocity = new Vector3(0, -25f, 0);
                     //pizzaz
                     Instantiate(comboPrefs[index], gameObject.transform);
@@ -220,10 +244,15 @@ public class GameManager : Singleton<GameManager> {
                     Fever++;
                     break;
                 }
+            //Attack supercharge
             case 5:
                 {
                     if(Fever>=4)
                     {
+                        //SetDef to false;
+                        PlayerManager.Instance.PlayerDef = false;
+                        playerAnim.SetBool("Block", false);
+
                         rb.velocity = new Vector3(12f, 2f, 0);
                         FeverHitBool = true;
                         //pizzaz
@@ -236,6 +265,19 @@ public class GameManager : Singleton<GameManager> {
                     }
                     break;
                   
+                }
+            //Block
+            case 6:
+                {
+
+                    PlayerManager.Instance.PlayerDef = true;   
+                       
+                    //pizzaz
+                    Instantiate(comboPrefs[index], gameObject.transform);
+                    playerAnim.SetBool("Block", true);
+                        
+                    break;
+
                 }
         }
 

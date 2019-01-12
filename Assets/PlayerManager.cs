@@ -29,6 +29,9 @@ public class PlayerManager : Singleton<PlayerManager> {
         }
     }
 
+
+
+
     public IEnumerator StopSlider(float sliderValue)
     {
         while (hpSlider.value > sliderValue)
@@ -38,6 +41,9 @@ public class PlayerManager : Singleton<PlayerManager> {
         }
     }
 
+
+    //Defence trigger 
+    public bool PlayerDef = false; 
     public float attackPower = 5;
 
     //Range Check bool

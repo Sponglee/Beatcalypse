@@ -7,6 +7,7 @@ public class EnemyManager : MonoBehaviour {
 
     public GameObject fltText;
     public Slider hpSlider;
+    public Animator enemyAnim;
 
     private float maxHp;
     [SerializeField]
@@ -48,6 +49,7 @@ public class EnemyManager : MonoBehaviour {
     {
         maxHp = hp;
         playerTransform = GameObject.Find("Player").transform;
+        enemyAnim = gameObject.GetComponent<Animator>();
 	}
 	
 	// Update is called once per frame
@@ -63,6 +65,7 @@ public class EnemyManager : MonoBehaviour {
     {
         if (other.CompareTag("Player"))
         {
+            
             StartCoroutine(Attack());
         }
 
@@ -81,10 +84,19 @@ public class EnemyManager : MonoBehaviour {
 
     public IEnumerator Attack()
     {
+        PlayerManager tmp = playerTransform.GetComponent<PlayerManager>();
         while(true)
         {
-            Debug.Log("REE");
-            playerTransform.GetComponent<PlayerManager>().Hp -= attackPower;
+            enemyAnim.SetTrigger("Attack");
+            if(tmp.PlayerDef)
+            {
+                tmp.Hp -= 0;
+            }
+            else
+            {
+                tmp.Hp -= attackPower;
+            }
+            
             yield return new WaitForSeconds(attackSpeed);
         }
         
