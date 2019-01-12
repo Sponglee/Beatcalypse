@@ -57,8 +57,7 @@ GameObject:
   - component: {fileID: 95486957175972856}
   - component: {fileID: 54923378535260082}
   - component: {fileID: 136030526162937512}
-  - component: {fileID: 135637814965904694}
-  - component: {fileID: 114996095859617124}
+  - component: {fileID: 114175131473712178}
   m_Layer: 0
   m_Name: Enemy1
   m_TagString: Enemy
@@ -121,8 +120,8 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1788408652808008}
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 9.73, y: 1.78, z: -5}
+  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
+  m_LocalPosition: {x: 7.53, y: -1.1700001, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 224886733186071004}
@@ -178,6 +177,26 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &114175131473712178
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1788408652808008}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dcad3e6cbbcdbe745a25a5872c92d75b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fltText: {fileID: 1001251165192770, guid: ec2c390561c1a4c48802d4091e734ac0, type: 2}
+  hpSlider: {fileID: 114344228432028350}
+  enemyAnim: {fileID: 95486957175972856}
+  hp: 10
+  PlayersInRange: 0
+  players: []
+  attackPower: 1
+  attackSpeed: 2
+  speed: 1
 --- !u!114 &114344228432028350
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -301,35 +320,6 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
---- !u!114 &114996095859617124
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1788408652808008}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2d6b73d5e5140f44d94b790728535458, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fltText: {fileID: 1001251165192770, guid: ec2c390561c1a4c48802d4091e734ac0, type: 2}
-  hpSlider: {fileID: 114344228432028350}
-  hp: 10
-  attackPower: 1
-  playerTransform: {fileID: 0}
-  speed: 1
---- !u!135 &135637814965904694
-SphereCollider:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1788408652808008}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 0
-  serializedVersion: 2
-  m_Radius: 0.57
-  m_Center: {x: 0, y: -0.57, z: 0}
 --- !u!136 &136030526162937512
 CapsuleCollider:
   m_ObjectHideFlags: 1

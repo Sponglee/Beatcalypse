@@ -6,7 +6,6 @@ using UnityEngine.UI;
 
 public class GameManager : Singleton<GameManager> {
 
-    public Rigidbody rb;
 
 
     public Transform vCamera;
@@ -18,7 +17,9 @@ public class GameManager : Singleton<GameManager> {
     public GameObject missRightPref;
 
     public GameObject[] comboPrefs;
-    public Animator playerAnim;
+
+    public List<Rigidbody> rb;
+    public List<GameObject> unitRef;
 
     [System.Serializable]
     public class Combos
@@ -36,6 +37,7 @@ public class GameManager : Singleton<GameManager> {
     public Text feverText;
     //for enemy pushbacks
     public bool FeverHitBool = false;
+    [SerializeField]
     private int fever = 0;
     public int Fever
     {
@@ -73,10 +75,20 @@ public class GameManager : Singleton<GameManager> {
     //for checking beat presses
     public bool beatStop = false;
 
-    
+    public bool ActionInProgress = false;
+
+
+    private void Awake()
+    {
+
+        unitRef = new List<GameObject>();
+    }
+
 
     void Start () {
 
+       
+        rb = new List<Rigidbody>();
         //Spam prevention
         moveTimeOut = BPM.Instance.calibration;
         calibTime = moveTimeOut;
@@ -104,7 +116,7 @@ public class GameManager : Singleton<GameManager> {
                     if (compArr(tempSubCombo, tmpCombo.combo))
                     {
                         int ListIDX = System.Array.IndexOf(ComboList, tmpCombo);
-                        Debug.Log(ListIDX);
+                        //Debug.Log(ListIDX);
 
                         ComboInvoke(ListIDX);
                         return;
@@ -125,7 +137,7 @@ public class GameManager : Singleton<GameManager> {
                     ClearCurrentCombo();
                     comboCount = 0;
                     currentCombo.Clear();
-                    
+                    Fever = 0;
 
                 }
                 checkBeat = false;
@@ -169,116 +181,205 @@ public class GameManager : Singleton<GameManager> {
         {
            //Move left
             case 0:
-                {
-                    ////SetDef to false;
-                    //PlayerManager.Instance.PlayerDef = false;
-                    //playerAnim.SetBool("Block", false);
+            {
+                ////SetDef to false;
+                //PlayerManager.Instance.PlayerDef = false;
+                //playerAnim.SetBool("Block", false);
 
-                    rb.velocity = new Vector3(10f, 0, 0);
-                    //pizzaz
-                    Instantiate(comboPrefs[index], gameObject.transform);
-                    playerAnim.SetTrigger("Run");
-                    // Fever bonus 
-                    Fever++;
-                    break;
+              
+                //pizzaz
+                Instantiate(comboPrefs[index], gameObject.transform);
+                foreach(GameObject anim in unitRef)
+                {
+                    if(anim)
+                    {
+                        anim.GetComponent<Animator>().SetTrigger("Run");
+                        anim.GetComponent<Rigidbody>().velocity = new Vector3(10f, 0, 0);
+                    }
+                   
                 }
+                    
+                // Fever bonus 
+                Fever++;
+                break;
+            }
             //Move right
             case 1:
-                {
-                    ////SetDef to false;
-                    //PlayerManager.Instance.PlayerDef = false;
-                    //playerAnim.SetBool("Block", false);
+            {
+                ////SetDef to false;
+                //PlayerManager.Instance.PlayerDef = false;
+                //playerAnim.SetBool("Block", false);
+                
+                //pizzaz
+                Instantiate(comboPrefs[index],gameObject.transform);
+                    foreach (GameObject anim in unitRef)
+                    {
+                        if (anim)
+                        {
+                            anim.GetComponent<Animator>().SetTrigger("Run");
+                            anim.gameObject.GetComponent<Rigidbody>().velocity = new Vector3(-10f, 0, 0);
 
-                    rb.velocity = new Vector3(-10f, 0, 0);
-                    //pizzaz
-                    Instantiate(comboPrefs[index],gameObject.transform);
-                    playerAnim.SetTrigger("Run");
-                    // Fever bonus 
-                    Fever++;
-                    break;
-                }
+                        }
+                    } 
+                        // Fever bonus 
+                Fever++;
+                break;
+            }
             //Jump left
             case 2:
+            {
+                //SetDef to false;
+                PlayerManager.Instance.PlayerDef = false;
+                foreach (GameObject anim in unitRef)
                 {
-                    //SetDef to false;
-                    PlayerManager.Instance.PlayerDef = false;
-                    playerAnim.SetBool("Block", false);
-
-                    rb.velocity = new Vector3(4f, 7f, 0);
-                    //pizzaz
-                    Instantiate(comboPrefs[index], gameObject.transform);
-                    playerAnim.SetTrigger("Walk");
-                    // Fever bonus 
-                    Fever++;
-                    break;
+                    if(anim)
+                    {
+                        anim.GetComponent<Animator>().SetBool("Block", false);
+                        anim.gameObject.GetComponent<Rigidbody>().velocity = new Vector3(4f, 7f, 0);
+                    }
+                   
                 }
+
+                
+                //pizzaz
+                Instantiate(comboPrefs[index], gameObject.transform);
+                foreach (GameObject anim in unitRef)
+                {
+                    if (anim)
+                    {
+
+                        anim.GetComponent<Animator>().SetTrigger("Walk");
+                    }
+                }
+                // Fever bonus 
+                Fever++;
+                break;
+            }
             //Jump right
             case 3:
+            {
+                //SetDef to false;
+                PlayerManager.Instance.PlayerDef = false;
+                foreach (GameObject anim in unitRef)
                 {
-                    //SetDef to false;
-                    PlayerManager.Instance.PlayerDef = false;
-                    playerAnim.SetBool("Block", false);
-
-                    Instantiate(comboPrefs[index], gameObject.transform);
-                    rb.velocity = new Vector3(-4f, 7f, 0);
-                    //pizzaz
-                    playerAnim.SetTrigger("Walk");
-                    // Fever bonus 
-                    Fever++;
-                    break;
+                    if(anim)
+                    {
+                        anim.GetComponent<Animator>().SetBool("Block", false);
+                        anim.gameObject.GetComponent<Rigidbody>().velocity = new Vector3(-4f, 7f, 0);
+                    }
+                   
                 }
+
+                Instantiate(comboPrefs[index], gameObject.transform);
+
+                //pizzaz
+                foreach (GameObject anim in unitRef)
+                {
+                    if(anim)
+                    {
+                        anim.GetComponent<Animator>().SetTrigger("Walk");
+                    }
+                    
+                }
+                // Fever bonus 
+                Fever++;
+                break;
+            }
             //Attack
             case 4:
+            {
+                //SetDef to false;
+                PlayerManager.Instance.PlayerDef = false;
+                foreach (GameObject anim in unitRef)
+                {
+                    if(anim)
+                    {
+                        anim.GetComponent<Animator>().SetBool("Block", false);
+                    }
+                    
+                }
+
+                //rb.velocity = new Vector3(0, -25f, 0);
+                //pizzaz
+                Instantiate(comboPrefs[index], gameObject.transform);
+                PlayerManager.Instance.PlayerAttack();
+                foreach (GameObject anim in unitRef)
+                {
+                    if(anim)
+                    {
+                        anim.GetComponent<Animator>().SetTrigger("Attack");
+                    }
+                   
+                }
+
+                // Fever bonus 
+                Fever++;
+                break;
+            }
+            //Attack supercharge
+            case 5:
+            {
+                if(Fever>=4)
                 {
                     //SetDef to false;
                     PlayerManager.Instance.PlayerDef = false;
-                    playerAnim.SetBool("Block", false);
+                        
+                    foreach (GameObject anim in unitRef)
+                    {
+                        if(anim)
+                        {
+                            anim.GetComponent<Animator>().SetBool("Block", false);
+                            anim.gameObject.GetComponent<Rigidbody>().velocity = new Vector3(12f, 2f, 0);
+                            Debug.Log(anim.gameObject.GetComponent<Rigidbody>().velocity);
+                        }
+                       
+                    }
 
-                    //rb.velocity = new Vector3(0, -25f, 0);
+                    FeverHitBool = true;
                     //pizzaz
                     Instantiate(comboPrefs[index], gameObject.transform);
-                    playerAnim.SetTrigger("Attack");
-                    PlayerManager.Instance.PlayerAttack();
-
-                    // Fever bonus 
-                    Fever++;
-                    break;
-                }
-            //Attack supercharge
-            case 5:
-                {
-                    if(Fever>=4)
+                    foreach (GameObject anim in unitRef)
                     {
-                        //SetDef to false;
-                        PlayerManager.Instance.PlayerDef = false;
-                        playerAnim.SetBool("Block", false);
-
-                        rb.velocity = new Vector3(12f, 2f, 0);
-                        FeverHitBool = true;
-                        //pizzaz
-                        Instantiate(comboPrefs[index], gameObject.transform);
-                        playerAnim.SetTrigger("Attack");
-                        //player attack with combo switch (true)
-                        PlayerManager.Instance.PlayerAttack(true);
-                        playerAnim.SetTrigger("AttackExit");
-                        Fever = 0;
+                        if(anim)
+                        {
+                            anim.GetComponent<Animator>().SetTrigger("Attack");
+                        }
+                       
                     }
-                    break;
-                  
+                    //player attack with combo switch (true)
+                    PlayerManager.Instance.PlayerAttack(true);
+                    foreach (GameObject anim in unitRef)
+                    {
+                        if(anim)
+                        {
+                            anim.GetComponent<Animator>().SetTrigger("AttackExit");
+                        }
+                        
+                    }
+                    Fever = 0;
                 }
+                break;
+                  
+            }
             //Block
             case 6:
-                {
+            {
 
-                    PlayerManager.Instance.PlayerDef = true;   
+                PlayerManager.Instance.PlayerDef = true;   
                        
-                    //pizzaz
-                    Instantiate(comboPrefs[index], gameObject.transform);
-                    playerAnim.SetBool("Block", true);
-                        
-                    break;
-
+                //pizzaz
+                Instantiate(comboPrefs[index], gameObject.transform);
+                foreach (GameObject anim in unitRef)
+                {
+                    if(anim)
+                    {
+                        anim.GetComponent<Animator>().SetBool("Block", true);
+                    }
+                    
                 }
+                break;
+
+            }
         }
 
         
@@ -300,7 +401,7 @@ public class GameManager : Singleton<GameManager> {
         //Reset combos and fever on spam
         else
         {
-            Debug.Log("CLEAR");
+            //Debug.Log("CLEAR");
             //HERE INPUT RESET PIZZAZ
             ClearCurrentCombo();
             //comboCount = 0;

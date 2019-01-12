@@ -1,11 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BPM : Singleton<BPM> {
 
     public static BPM BPMInstance;
 
+    public GameManager gameManagerRef;
+    public Image border;
     [SerializeField]
     private float bpm;
     public float Bpm
@@ -62,6 +65,10 @@ public class BPM : Singleton<BPM> {
 
     }
 
+    private void Start()
+    {
+        gameManagerRef = GameManager.Instance;
+    }
     private void Update()
     {
         BeatDetection();
@@ -92,10 +99,27 @@ public class BPM : Singleton<BPM> {
             beatCalib = true;
             beatCalibStop = true;
             beatCountCalib++;
-            if (beatCountCalib % 4 != 0)
-                beatAnim.SetTrigger("Beat");
-            else if (beatCountCalib % 4 == 0)
-                beatAnim.SetTrigger("Beat4");
+
+            //FLASH THE BORDER
+            if(gameManagerRef.ActionInProgress)
+            {
+                border.color = Color.gray;
+                StartCoroutine(StopColor(Color.gray));
+            }
+            else if(GameManager.Instance.Fever<4)
+            {
+
+                border.color = Color.white;
+                StartCoroutine(StopColor(Color.white));
+            }
+            else
+            {
+                border.color = Color.yellow;
+                StartCoroutine(StopColor(Color.yellow));
+            }
+            
+          
+            ////////////////////
         }
 
         //full beat count
@@ -112,13 +136,30 @@ public class BPM : Singleton<BPM> {
             beatFull = true;
             beatCountFull++;
             //beatAnim.SetTrigger("Beat");
-        }
 
-       
+
+        }
+     
         
        
     }
 
+   
+   
+    public IEnumerator StopColor(Color col)
+    {
+        float t = 0f;
+        float duration = calibration;
+
+        while (border.color != Color.black)
+        {
+            border.color = Color.Lerp(col, Color.black, t);
+            t += Time.deltaTime / duration;
+            //Debug.Log("EEEERE");
+            yield return new WaitForSecondsRealtime(0.01f);
+        }
+        
+    }
    
     //toggle beat off after calibration delay
     public IEnumerator StopBeat()
